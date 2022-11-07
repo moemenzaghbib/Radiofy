@@ -19,6 +19,11 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
+
+        role: {
+            type: String,
+            required: true
+        },
         statut: {
             type: Boolean,
             required: true
@@ -27,19 +32,15 @@ const userSchema = new Schema(
             type: Number,
             required: true
         },
-        created_at: {
-            type: Date,
-            required: true
-        },
-        updated_at: {
-            type: Date,
-            required: true
-        },
-        avatar: {
+                avatar: {
             type: String,
-            required: false
-        }
+            required: false}
 
+        
+
+    },
+    {
+        timestamps: true
     }
 );
 export default model('User',userSchema);

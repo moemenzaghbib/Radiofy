@@ -1,7 +1,7 @@
 import User from "../models/user.js";
 import {sendmail} from "../services/mailer.js"
-//import {verifyAccount} from "../services/tokener.js"
-
+import {emailToken} from "../services/tokener.js"
+import {generatePassword} from "../services/passwordGenerator.js"
 import bcrypt from 'bcrypt';
 var saltRounds = 10;
 export async function signin(req, res) {
@@ -10,7 +10,9 @@ export async function signin(req, res) {
     // check user password with hashed password stored in the database
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (validPassword) {
-     // sendmail();
+    
+    var toknedEmail = emailToken(req.body.email);
+     
       res.status(200).json({ message: "Valid password" });
     }
   else {
@@ -21,20 +23,50 @@ export async function signin(req, res) {
 }
 };
 
+export async function verify(req, res){
+  User
+  .findOneAndUpdate({ "email": req.params.email }, { "is_verified": 2})
+  .then(doc => {
+    res.status(200).json({message: "your account is now verified"});
+  })
+  .catch(err => {
+    res.status(500).json({ error: err });
+  });
 
+}
 
-export async function signup(req, res) {
-  const salt = await bcrypt.genSalt(10);
-  const  hashedPwd = await bcrypt.hash(req.body.password, salt);
-  
+export async function googleVerifier(req, res) {
+  const user = await User.findOne({ googleID: req.body.googleID });
+  if (user) {
+    // check user password with hashed password stored in the database
+         res.status(200).json(user);
+    }
+  else {
+  res.status(401).json({ error: "User does not exist" });
+}
+}
+export async function googleSignIn(req, res) {
+  const user = await User.findOne({ googleID: req.body.googleID });
+  if (user) {
+    // check user password with hashed password stored in the database
+         res.status(200).json(user);
+    }
+  else {
+  res.status(401).json({ error: "User does not exist" });
+}
+};
+export async function googleSignUp(req, res) {
+  const password = generatePassword();
   User.create({ firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
-    password: hashedPwd,
+    password: password,
     role: "user", 
     statut: true,
-    is_verified: 1})
+    is_verified: 1,
+    googleID: req.body.googleID})
   .then(
+     
     res.status(200).json({
       firstname: req.body.firstname,
       lastname: req.body.lastname,
@@ -44,4 +76,30 @@ export async function signup(req, res) {
   .catch((err) => {
     res.status(500).json({ error: err });
   });
+  sendmail(req.body.email);
+}
+export async function signup(req, res) {
+ 
+  const  GP = generatePassword();
+
+  User.create({ firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+    password: "333",
+    role: "user", 
+    statut: true,
+    is_verified: 1,
+   googleID: req.body.googleID})
+  .then(
+     
+    res.status(200).json({
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+      password: req.body.password,
+    }))
+  .catch((err) => {
+    res.status(500).json({ error: err });
+  });
+  sendmail(req.body.email);
 }

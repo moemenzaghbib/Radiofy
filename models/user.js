@@ -34,11 +34,19 @@ const userSchema = new Schema(
         },
                 avatar: {
             type: String,
-            required: false}
-
+            required: false
+        },
+        
+                googleID: {
+                type: String,
+                required: false
+            }
+        
+        
         
 
-    },
+    }
+    ,
     {
         timestamps: true
     }

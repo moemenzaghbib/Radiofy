@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { signin, signup } from '../controllers/user.js';
+import { signin, signup, verify, googleSignIn, googleVerifier, googleSignUp } from '../controllers/user.js';
   
 const router = express.Router();
 
@@ -12,5 +12,20 @@ router
   .route('/signup')
   .post(signup);
 
+router
+  .route('/verify/:email')
+  .put(verify);
+
+router
+  .route('/googleSignup')
+  .post(googleSignUp);
+
+router
+  .route('/googleSignIn')
+  .post(googleSignIn);
+
+router
+  .route('/googleVerifier')
+  .post(googleVerifier);
 
 export default router;

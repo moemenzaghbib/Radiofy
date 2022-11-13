@@ -1,8 +1,9 @@
 import User from "../models/user.js";
-import {sendmail} from "../services/mailer.js"
+import {sendmail, sendmailresetpassword} from "../services/mailer.js"
 import {emailToken} from "../services/tokener.js"
 import {generatePassword} from "../services/passwordGenerator.js"
 import bcrypt from 'bcrypt';
+import user from "../models/user.js";
 var saltRounds = 10;
 export async function signin(req, res) {
   const user = await User.findOne({ email: req.body.email });
@@ -27,7 +28,7 @@ export async function verify(req, res){
   User
   .findOneAndUpdate({ "email": req.params.email }, { "is_verified": 2})
   .then(doc => {
-    res.status(200).json({message: "your account is now verified"});
+    res.status(200).json(user);
   })
   .catch(err => {
     res.status(500).json({ error: err });
@@ -102,4 +103,30 @@ export async function signup(req, res) {
     res.status(500).json({ error: err });
   });
   sendmail(req.body.email);
+}
+
+export async function forgot(req, res) {
+
+  const user = await User.findOne({ email: req.params.email });
+  if(user){
+      const verificationcode = generatePassword();
+      sendmailresetpassword(req.params.email,verificationcode);
+      res.status(200).json({ verificationcode: verificationcode });
+  }
+  else {
+      res.status(500).json({ message: "no account with this mail to restor" });
+  }
+};
+
+export async function restorPassword(req,res) {
+  User
+  .findOneAndUpdate({email: req.body.email}, {password: req.body.password})
+  .then(doc1 => {
+     
+          res.status(200).json({message: "password has been changed succefully"});
+      
+  })
+  .catch(err => {
+      res.status(500).json({ error: err });
+  });
 }

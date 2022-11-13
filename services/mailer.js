@@ -28,3 +28,23 @@ export function sendmail(email) {
   }
 });
 }
+
+
+export function sendmailresetpassword(email,password) {
+  var link = `http://localhost:9090/user/verify/${email}` 
+  var mailOptions = {
+    from: 'zaghbib',
+    to: 'developer.mediseo@gmail.com',
+    subject: 'Sending Email using Node.js',
+    text: `here is the the validation code to reset your password, ${password}`
+    // html: '<h1>Hi Smartherd</h1><p>Your Messsage</p>'        
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+}

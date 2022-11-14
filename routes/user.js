@@ -1,6 +1,9 @@
 import express from 'express';
 
-import { signin, signup, verify, googleSignIn, googleVerifier, googleSignUp,forgot, restorPassword } from '../controllers/user.js';
+import { signin, signup, verify, googleSignIn,
+         googleVerifier, googleSignUp,forgot, 
+         restorPassword, editProfileUser
+  } from '../controllers/user.js';
   
 const router = express.Router();
 
@@ -29,11 +32,15 @@ router
   .post(googleVerifier);
 
 router
-  .route('/forgot/:email')
-  .get(forgot);
+  .route('/forgot')
+  .post(forgot);
 
 router 
   .route('/restorpassword')
   .put(restorPassword);
+
+router 
+  .route('/editProfileUser')
+  .put(editProfileUser);
 
 export default router;

@@ -107,11 +107,12 @@ export async function signup(req, res) {
 
 export async function forgot(req, res) {
 
-  const user = await User.findOne({ email: req.params.email });
+  const user = await User.findOne({ email: req.body.email });
   if(user){
       const verificationcode = generatePassword();
-      sendmailresetpassword(req.params.email,verificationcode);
-      res.status(200).json({ verificationcode: verificationcode });
+      sendmailresetpassword(req.body.email,verificationcode);
+      console.log(verificationcode);
+      res.status(200).json({ key: "verificationcode",value: verificationcode });
   }
   else {
       res.status(500).json({ message: "no account with this mail to restor" });
@@ -130,3 +131,19 @@ export async function restorPassword(req,res) {
       res.status(500).json({ error: err });
   });
 }
+
+export async function editProfileUser(req,res) {
+  User
+  .findOneAndUpdate({email: req.body.email}, {firstname: req.body.firstname, 
+                                              lastname: req.body.lastname, 
+                                              password: req.body.password})
+  .then(doc1 => {
+     
+          res.status(200).json({message: "profile has been modfied succefully"});
+      
+  })
+  .catch(err => {
+      res.status(500).json({ error: err });
+  });
+}
+

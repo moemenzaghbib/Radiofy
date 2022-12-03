@@ -40,7 +40,10 @@ const userSchema = new Schema(
                 googleID: {
                 type: String,
                 required: false
-            }
+        },
+                 posts: [
+            { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }
+          ]
         
         
         

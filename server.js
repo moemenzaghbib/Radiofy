@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import userRoutes from './routes/user.js';
+import postRoutes from './routes/post.js'
 
 
 const app = express();
@@ -24,6 +25,7 @@ mongoose
   app.use(express.urlencoded({ extended: true }));
 
 app.use('/user', userRoutes);
+app.use('/post', postRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);

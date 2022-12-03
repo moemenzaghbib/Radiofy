@@ -6,20 +6,18 @@ import bcrypt from 'bcrypt';
 import user from "../models/user.js";
 var saltRounds = 10;
 export async function signin(req, res) {
-  const user = await User.findOne({ email: req.body.email });
+  const user = await User.findOne({ email: req.body.email,password: req.body.password });
   if (user) {
     // check user password with hashed password stored in the database
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (validPassword) {
+    //const validPassword = await bcrypt.compare(req.body.password, user.password);
+   
     
-    var toknedEmail = emailToken(req.body.email);
+   // var toknedEmail = emailToken(req.body.email);
      
-      res.status(200).json({ message: "Valid password" });
+      res.status(200).json(user);
     }
-  else {
-    res.status(400).json({ error: "Invalid Password" });
-  }
-} else {
+ 
+ else {
   res.status(401).json({ error: "User does not exist" });
 }
 };

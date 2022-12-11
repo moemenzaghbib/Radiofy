@@ -66,7 +66,7 @@ export async function AddLikePost(req, res ){
     var new_likes_number = post.likes+1;
   const new_post = await Post.findOneAndUpdate({title: req.body.title}, {likes: new_likes_number})
   if(new_post){
-    user.liked_posts.pull(post._id)
+    user.liked_posts.push(post)
       user.save();
     res.status(200).json({key: "likesNumber",value: new_likes_number })
   }else {
@@ -79,8 +79,10 @@ export async function RemoveLikePost(req, res ){
   const user = await User.findOne({email: req.body.email})
   const post = await Post.findOne({title: req.body.title}) 
   var new_likes_number = post.likes-1;
-const new_post = await Post.findOneAndUpdate({title: req.body.title}, {likes: new_likes_number})
-0
+  console.warn(new_likes_number)
+  const new_post = await Post.findOneAndUpdate({title: req.body.title}, {likes: new_likes_number})
+  if(new_post){
+
 if(new_post){
   
   user.liked_posts.pull(post._id)
@@ -89,7 +91,7 @@ if(new_post){
 }else {
   res.status(500).json({error: " sar error ya hamma "})
 }
-}
+}}
 
 export async function AddCommentPost(req, res ) {
   const user = await User.findOne({email: req.body.email})

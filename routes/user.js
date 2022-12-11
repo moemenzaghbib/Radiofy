@@ -2,7 +2,8 @@ import express from 'express';
 
 import { signin, signup, verify, googleSignIn,
          googleVerifier, googleSignUp,forgot, 
-         restorPassword, editProfileUser, addLikeOfUser,RemoveLikeOfUser
+         restorPassword, editProfileUser, 
+         addLikeOfUser,RemoveLikeOfUser,checkLikeUser
   } from '../controllers/user.js';
   
 const router = express.Router();
@@ -50,4 +51,8 @@ router
 router
   .route('/RemoveLikeOfUser')
   .post(RemoveLikeOfUser);
+
+router
+  .route('/checkLikeUser')
+  .post(checkLikeUser)
 export default router;

@@ -143,7 +143,27 @@ export async function editProfileUser(req,res) {
       res.status(500).json({ error: err });
   });
 }
-
+export async function checkLikeUser(req, res){
+  const post = await Post.findOne({title: req.body.title}) 
+  const user = await User.findOne({email: req.body.email})
+  var liked = "false" ;
+  if (user){
+    for(var i= 0; i < user.liked_posts.length; i++)
+    {   console.log(post._id)
+      console.log("zaama ya hamma ?")
+      console.log(user.liked_posts[i])
+      console.log("wfe test ya hamma")
+        if(post._id .equals(user.liked_posts[i])){
+          liked="true";
+          console.log(liked)
+        }
+    }
+    res.status(200).json({key: "liked", value: liked})
+  }
+  else {
+       res.status(500).json({ error: err });
+   };
+}
 export async function addLikeOfUser(req, res) {
 
   const post = await Post.findOne({title: req.body.title}) 

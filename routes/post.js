@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAll, post_post, verify_post,GetOnePost,AddLikePost } from '../controllers/post.js';
+import { getAll, post_post, verify_post,GetOnePost,AddLikePost,RemoveLikePost } from '../controllers/post.js';
 
 
   
@@ -19,5 +19,8 @@ router
   .post(GetOnePost);
 router
   .route('/AddLikePost')
-  .put(AddLikePost)
+  .put(AddLikePost);
+router
+  .route('/RemoveLikePost')
+  .put(RemoveLikePost);
 export default router;

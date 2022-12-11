@@ -4,6 +4,8 @@ import {emailToken} from "../services/tokener.js"
 import {generatePassword} from "../services/passwordGenerator.js"
 import bcrypt from 'bcrypt';
 import user from "../models/user.js";
+import Post from "../models/post.js";
+
 var saltRounds = 10;
 export async function signin(req, res) {
   const user = await User.findOne({ email: req.body.email,password: req.body.password });
@@ -88,15 +90,12 @@ export async function signup(req, res) {
     role: "user", 
     statut: true,
     is_verified: 1,
-   googleID: req.body.googleID})
-  .then(
-     
-    res.status(200).json({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      password: req.body.password,
-    }))
+   })
+  .then(user=>{
+    res.status(200).json(user)
+  }
+  )  
+   
   .catch((err) => {
     res.status(500).json({ error: err });
   });
@@ -144,4 +143,53 @@ export async function editProfileUser(req,res) {
       res.status(500).json({ error: err });
   });
 }
+
+export async function addLikeOfUser(req, res) {
+
+  const post = await Post.findOne({title: req.body.title}) 
+  const user = await User.findOne({email: req.body.email})
+  if (user){
+          user.liked_posts.push(post)
+          user.save();
+          res.status(200).json(user);
+      
+  }
+ else {
+      res.status(500).json({ error: err });
+  };
+}
+
+export async function RemoveLikeOfUser(req, res) {
+  const user = await User.findOne({email: req.body.email})
+  const post = await Post.findOne({title: req.body.title})  
+  
+     
+      user.liked_posts.pull(post._id)
+      user.save();
+      res.status(200).json(user);
+     }
+    
+ // const post = await Post.findOne({_id:  user.liked_posts[0]}) 
+  //res.status(200).json(post);    
+  
+ /* var list = [];
+  if (user){
+         
+          user.liked_posts.forEach(function(y) 
+          { 
+           
+            const post = await Post.findOne({title: req.body.title}) 
+          }
+          );
+          res.status(200).json(list);    
+      
+  }
+ else {
+      res.status(500).json({ error: err });
+  };*/
+
+
+
+
+
 

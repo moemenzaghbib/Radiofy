@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import post from './post.js';
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema(
@@ -41,13 +42,8 @@ const userSchema = new Schema(
                 type: String,
                 required: false
         },
-                 posts: [
-            { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }
-          ]
-        
-        
-        
-
+                 posts: [{ type: mongoose.Schema.ObjectId, ref: 'Post'}],
+                 liked_posts: [{ type: mongoose.Schema.ObjectId, ref: 'Post'}],
     }
     ,
     {

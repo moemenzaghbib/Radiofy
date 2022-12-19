@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 import userRoutes from './routes/user.js';
 import postRoutes from './routes/post.js'
+import chatRoomRoutes from './routes/chatRoom.js'
 
 
 const app = express();
@@ -26,6 +27,7 @@ mongoose
 
 app.use('/user', userRoutes);
 app.use('/post', postRoutes);
+app.use('/chatRoom', chatRoomRoutes);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);

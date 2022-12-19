@@ -26,11 +26,7 @@ const postSchema = new Schema(
         likes: {
             type: Number,
             required: true
-        },
-        comments: [{ body: String, date: Date, author: { 
-            type: mongoose.Schema.Types.ObjectId, 
-            ref: 'User' 
-        } }],
+        },  
        
     },
     {

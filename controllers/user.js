@@ -5,7 +5,7 @@ import {generatePassword} from "../services/passwordGenerator.js"
 import bcrypt from 'bcrypt';
 import user from "../models/user.js";
 import Post from "../models/post.js";
-
+import mongoose from 'mongoose';
 var saltRounds = 10;
 export async function signin(req, res) {
   const user = await User.findOne({ email: req.body.email,password: req.body.password });

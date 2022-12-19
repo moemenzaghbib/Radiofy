@@ -1,6 +1,7 @@
 import Post from "../models/post.js";
 import User from "../models/user.js";
-
+import Comment from "../models/comment.js";
+import mongoose from 'mongoose';
 export async function post_post(req, res) {
     const user = await User.findOne({FirstName: req.body.author});
      Post.create({ title: req.body.title,
@@ -92,7 +93,7 @@ if(new_post){
   res.status(500).json({error: " sar error ya hamma "})
 }
 }}
-
+/*
 export async function AddCommentPost(req, res ) {
   const user = await User.findOne({email: req.body.email})
   const post = await Post.findOne({title: req.body.title}) 
@@ -104,17 +105,59 @@ export async function AddCommentPost(req, res ) {
     res.status(500).json({error: " ejri ya hamma khlet"})
   }
   
+}*/
+export async function getAllComment(req, res) {
+  var list = []
+  const post = await Post.findOne({title: req.body.title}) 
+  const comments = await Comment.find({post: post._id})
+  for(var i= 0; i < comments.length; i++)
+{    
+  
+  console.warn("moemen test lehene");
+  console.warn(comments[i].author);
+  var commnt_author =await User.findById(mongoose.Types.ObjectId(comments[i].author));
+  if(commnt_author){
+    console.warn(commnt_author);
+    //console.log(commnt_author);
+      list.push({key: commnt_author.firstname+" "+commnt_author.lastname, value: comments[i].content})
+  }
+ 
 }
-
-export async function RemoveCommentPost(req, res ) {
+  if(comments){
+    res.status(200).json(list);
+  }else {
+    res.status(500).json({error: " fama prob"});
+  }
+}
+export async function addComment(req, res ) {
   const user = await User.findOne({email: req.body.email})
   const post = await Post.findOne({title: req.body.title}) 
-  if(post){
-    post.comments.pull({ body: req.body.comment, date: req.body.date, author: req.body.user }) 
-    post.save();
-    res.status(200).json(post);
-  }else {
-    res.status(500).json({error: " ejri ya hamma khlet"})
-  }
+  Comment.create({ post: post,
+    author: user,
+    content: req.body.content,
+   
+   });
+  
+   var list = []
+  
+   const comments = await Comment.find({post: post._id})
+   for(var i= 0; i < comments.length; i++)
+ {    
+   
+   console.warn("moemen test lehene");
+   console.warn(comments[i].author);
+   var commnt_author =await User.findById(mongoose.Types.ObjectId(comments[i].author));
+   if(commnt_author){
+     console.warn(commnt_author);
+     //console.log(commnt_author);
+       list.push({key: commnt_author.firstname+" "+commnt_author.lastname, value: comments[i].content})
+   }
+  
+ }
+   if(comments){
+     res.status(200).json(list);
+   }else {
+     res.status(500).json({error: " fama prob"});
+   }
   
 }

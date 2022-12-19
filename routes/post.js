@@ -1,5 +1,6 @@
 import express from 'express';
-import { getAll, post_post, verify_post,GetOnePost,AddLikePost,RemoveLikePost } from '../controllers/post.js';
+import { getAll, post_post, verify_post,GetOnePost,AddLikePost,RemoveLikePost,addComment,
+  getAllComment} from '../controllers/post.js';
 
 
   
@@ -23,4 +24,11 @@ router
 router
   .route('/RemoveLikePost')
   .put(RemoveLikePost);
+router  
+  .route('/addComment')
+  .post(addComment);
+router
+  .route('/allcomments')
+  .post(getAllComment)
+
 export default router;

@@ -118,9 +118,14 @@ export async function createChatRoom(req, res) {
     const radio = await User.findOne({email: req.body.radio})
     const chatRoom = await ChatRoom.findOne({radio: radio})
     if(chatRoom){
+      if(chatRoom.bannedUsers.includes(user._id)){
+        res.status(200).json(chatRoom);
+      }else{
         chatRoom.bannedUsers.push(user);
         chatRoom.save();
         res.status(200).json(chatRoom);
+      }
+        
     }else {
         res.status(500).json({error: "ya hamma rahi khlet"})
     }

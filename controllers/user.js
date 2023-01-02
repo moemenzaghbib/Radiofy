@@ -8,20 +8,23 @@ import Post from "../models/post.js";
 import mongoose from 'mongoose';
 var saltRounds = 10;
 export async function signin(req, res) {
-  const user = await User.findOne({ email: req.body.email,password: req.body.password });
+  const user = await User.findOne({ email: req.body.email});
   if (user) {
+   // console.log(await bcrypt.hash(req.body.password, 10));
     // check user password with hashed password stored in the database
     //const validPassword = await bcrypt.compare(req.body.password, user.password);
    
-    
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
    // var toknedEmail = emailToken(req.body.email);
-     
-      res.status(200).json(user);
+   if (validPassword) {
+    res.status(200).json(user);
     }
- 
- else {
+  else {
+    res.status(400).json({ error: "Invalid Password/Email" });
+  }
+  } else {
   res.status(401).json({ error: "User does not exist" });
-}
+  }
 };
 
 export async function verify(req, res){
@@ -82,11 +85,11 @@ export async function googleSignUp(req, res) {
 export async function signup(req, res) {
  
   const  GP = generatePassword();
-
+  const  hashedPwd = await bcrypt.hash(req.body.password, 10);
   User.create({ firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
-    password: req.body.password,
+    password: hashedPwd,
     role: "user", 
     statut: true,
     is_verified: 1,

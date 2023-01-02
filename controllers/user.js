@@ -86,7 +86,7 @@ export async function signup(req, res) {
   User.create({ firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
-    password: "333",
+    password: req.body.password,
     role: "user", 
     statut: true,
     is_verified: 1,
@@ -108,7 +108,7 @@ export async function forgot(req, res) {
   if(user){
       const verificationcode = generatePassword();
       sendmailresetpassword(req.body.email,verificationcode);
-      console.log(verificationcode);
+    //  console.log(verificationcode);
       res.status(200).json({ key: "verificationcode",value: verificationcode });
   }
   else {
@@ -130,13 +130,13 @@ export async function restorPassword(req,res) {
 }
 
 export async function editProfileUser(req,res) {
-  User
+  await User
   .findOneAndUpdate({email: req.body.email}, {firstname: req.body.firstname, 
                                               lastname: req.body.lastname, 
-                                              password: req.body.password})
+                                              })
   .then(doc1 => {
      
-          res.status(200).json({message: "profile has been modfied succefully"});
+          res.status(200).json(doc1);
       
   })
   .catch(err => {
@@ -149,13 +149,13 @@ export async function checkLikeUser(req, res){
   var liked = "false" ;
   if (user){
     for(var i= 0; i < user.liked_posts.length; i++)
-    {   console.log(post._id)
-      console.log("zaama ya hamma ?")
-      console.log(user.liked_posts[i])
-      console.log("wfe test ya hamma")
+    {  // console.log(post._id)
+     // console.log("zaama ya hamma ?")
+     // console.log(user.liked_posts[i])
+//console.log("wfe test ya hamma")
         if(post._id .equals(user.liked_posts[i])){
           liked="true";
-          console.log(liked)
+        //  console.log(liked)
         }
     }
     res.status(200).json({key: "liked", value: liked})

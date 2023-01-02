@@ -14,6 +14,8 @@ mongoose.set('debug', true);
 mongoose.Promise = global.Promise;
 
 mongoose
+//.connect("mongodb+srv://Moemen99:Moemen99@cluster0.8k10la9.mongodb.net/?retryWrites=true&w=majority")
+
   .connect(`mongodb://127.0.0.1:27017/${databaseName}`)
   .then(() => {
     console.log(`Connected to ${databaseName}`);

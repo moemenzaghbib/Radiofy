@@ -52,7 +52,7 @@ else{
 export async function GetOnePost(req, res ) {
   const post = await Post.findOne({title: req.body.title})
   if(post){
-    console.warn(post)
+   // console.warn(post)
     res.status(200).json(post);
     } else {
       res.status(500).json({error: "melgithomch"})
@@ -132,16 +132,17 @@ export async function getAllComment(req, res) {
 export async function addComment(req, res ) {
   const user = await User.findOne({email: req.body.email})
   const post = await Post.findOne({title: req.body.title}) 
-  Comment.create({ post: post,
+ Comment.create({ post: post,
     author: user,
     content: req.body.content,
    
    });
-  
-   var list = []
-  
+   
+      var list = []
+
    const comments = await Comment.find({post: post._id})
-   for(var i= 0; i < comments.length; i++)
+  // console.log(comments);
+  /* for(var i= 0; i < comments.length; i++)
  {    
    
    console.warn("moemen test lehene");
@@ -154,10 +155,10 @@ export async function addComment(req, res ) {
    }
   
  }
-   if(comments){
-     res.status(200).json(list);
-   }else {
+   if(comments){*/
+     res.status(200).json({key: "comment",value: "added"});
+   /*}else {
      res.status(500).json({error: " fama prob"});
-   }
+   }*/
   
 }

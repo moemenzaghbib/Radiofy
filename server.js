@@ -15,7 +15,7 @@ mongoose.Promise = global.Promise;
 
 mongoose
 .connect("mongodb://mongo:CC0HKVDDar1KFG91B0vy@containers-us-west-142.railway.app:6148")
-
+         
  // .connect(`mongodb://127.0.0.1:27017/${databaseName}`)
   .then(() => {
     console.log(`Connected to ${databaseName}`);
@@ -32,5 +32,5 @@ app.use('/post', postRoutes);
 app.use('/chatRoom', chatRoomRoutes);
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+  console.log(`Server running at http:${port}/`);
 });

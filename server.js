@@ -14,7 +14,7 @@ mongoose.set('debug', true);
 mongoose.Promise = global.Promise;
 
 mongoose
-.connect("mongodb://mongo:CC0HKVDDar1KFG91B0vy@containers-us-west-142.railway.app:6148")
+.connect("mongodb://mongo:wHn2Z3ZZPZOiCZDFkwdp@containers-us-west-28.railway.app:6352")
          
  // .connect(`mongodb://127.0.0.1:27017/${databaseName}`)
   .then(() => {
